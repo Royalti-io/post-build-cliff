@@ -6,11 +6,28 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-/* ----- Token override (light, the only mode we ship) ----- */
+/* ----- Shared tokens (fonts, sizing) ----- */
 :root,
 :root[data-theme='light'],
 :root[data-theme='dark'] {
-  /* paper + ink */
+  --sl-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --sl-font-system-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --sl-content-width: 52rem;
+  --sl-sidebar-width: 19rem;
+
+  --sl-text-h1: clamp(2.6rem, 4.5vw, 3.5rem);
+  --sl-text-h2: 1.875rem;
+  --sl-text-h3: 1.25rem;
+  --sl-text-h4: 1rem;
+  --sl-text-body: 1.0625rem;
+}
+
+/* ----- LIGHT mode (warm paper) ----- */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
   --sl-color-bg: #F2EDE3;
   --sl-color-bg-nav: #F2EDE3;
   --sl-color-bg-sidebar: #F2EDE3;
@@ -39,22 +56,6 @@
   --sl-color-hairline-light: rgba(17, 17, 17, 0.07);
   --sl-color-hairline-shade: #111111;
 
-  /* fonts */
-  --sl-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --sl-font-system-mono: 'JetBrains Mono', ui-monospace, monospace;
-
-  /* sizing */
-  --sl-content-width: 52rem;
-  --sl-sidebar-width: 19rem;
-
-  /* type scale (editorial) */
-  --sl-text-h1: clamp(2.6rem, 4.5vw, 3.5rem);
-  --sl-text-h2: 1.875rem;
-  --sl-text-h3: 1.25rem;
-  --sl-text-h4: 1rem;
-  --sl-text-body: 1.0625rem;
-
-  /* design tokens (own namespace, used by custom components) */
   --paper: #F2EDE3;
   --ink: #111111;
   --sub: #5A554C;
@@ -65,9 +66,46 @@
   --code-fg: #F2EDE3;
 }
 
-/* Force light: ignore prefers-color-scheme so the brand stays itself */
+/* ----- DARK mode (warm ink, not cold black — keeps the editorial feel) ----- */
 :root[data-theme='dark'] {
-  color-scheme: light;
+  color-scheme: dark;
+
+  --sl-color-bg: #14110D;
+  --sl-color-bg-nav: #14110D;
+  --sl-color-bg-sidebar: #14110D;
+  --sl-color-bg-inline-code: rgba(242, 237, 227, 0.08);
+  --sl-color-bg-accent: #E26B40;
+
+  --sl-color-text: #ECE7DC;
+  --sl-color-text-accent: #E26B40;
+  --sl-color-text-invert: #14110D;
+
+  --sl-color-white: #ECE7DC;
+  --sl-color-gray-1: #E2DCD0;
+  --sl-color-gray-2: #C9C2B5;
+  --sl-color-gray-3: #A09A8E;
+  --sl-color-gray-4: #807A6F;
+  --sl-color-gray-5: #5F5A52;
+  --sl-color-gray-6: rgba(242, 237, 227, 0.16);
+  --sl-color-gray-7: rgba(242, 237, 227, 0.08);
+  --sl-color-black: #0B0907;
+
+  --sl-color-accent: #E26B40;
+  --sl-color-accent-low: rgba(226, 107, 64, 0.12);
+  --sl-color-accent-high: #F08A60;
+
+  --sl-color-hairline: rgba(242, 237, 227, 0.16);
+  --sl-color-hairline-light: rgba(242, 237, 227, 0.09);
+  --sl-color-hairline-shade: #ECE7DC;
+
+  --paper: #14110D;
+  --ink: #ECE7DC;
+  --sub: #A09A8E;
+  --rust: #E26B40;
+  --teal: #5FA39F;
+  --hairline: rgba(242, 237, 227, 0.16);
+  --code-bg: #0B0907;
+  --code-fg: #ECE7DC;
 }
 
 /* ----- Typography pass ----- */
