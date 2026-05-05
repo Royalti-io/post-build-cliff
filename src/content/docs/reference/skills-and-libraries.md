@@ -26,54 +26,66 @@ Install: `git clone` the repo, then drop the skill folder into `~/.claude/skills
 
 ## Community skills worth installing
 
-These are skills we (or the contributors) use on real projects. Listed roughly in order of "install first." Each one extends Claude Code with patterns or domain knowledge that would otherwise take you weeks to gather.
+These are skills we use on real projects. Each one extends Claude Code with patterns or domain knowledge that would otherwise take weeks to gather. Every link below was verified to resolve at the time of writing — see the [link-curator](#) audit for our quarterly freshness process.
 
 ### Building & shipping
 
 - **[scrollytelling](https://github.com/doodledood/claude-code-plugins/tree/main/claude-plugins/frontend-design/skills/scrollytelling)** — Pinned-narrative landing pages, scroll-driven storytelling, parallax. Used to build *this* site's landing page.
-- **[shadcn](https://github.com/jpcraco/claude-code-plugins/tree/main/claude-plugins/shadcn)** — Search, install, debug, and compose [shadcn/ui](https://ui.shadcn.com/) components. The fastest way to a polished UI on top of Tailwind.
-- **[huashu-design](https://github.com/doodledood/claude-code-plugins/tree/main/claude-plugins/frontend-design/skills/huashu-design)** — Hi-fi prototypes, design variants, slide decks, motion design — all using HTML as the medium. The skill that produces designs that don't look AI-generated.
 - **[claude-design](https://claude.ai/design)** — Anthropic's hosted design tool for pitch decks, prototypes, one-pagers, marketing pages, and interactive explainers. Best zero-to-prototype path.
+- **shadcn skill** — Manages [shadcn/ui](https://ui.shadcn.com/) components: add, search, fix, debug, compose. Often distributed as part of team plugin bundles rather than as a single public repo; ask in the shadcn community Discord or check your team's plugin index.
 
 ### Design system discipline
 
-- **[ss-setup / ss-audit / ss-lint / ss-a11y / ss-review / ss-feedback / ss-update](https://github.com/Royalti-io/styleseed)** — The "StyleSeed" suite. Set up a design system, audit screens against Nielsen heuristics, lint for design-system violations, audit accessibility, add appropriate user-feedback states. The closest thing to having a design lead in your terminal.
-- **[theme-factory](https://github.com/anthropics/skills)** — Apply themes consistently across slides, docs, reports, HTML pages.
-- **[brand-guidelines](https://github.com/anthropics/skills)** — Anthropic's example skill for applying official brand colours and typography. Useful as a template for your own brand-guideline skill.
+- **[StyleSeed (ss-setup / ss-audit / ss-lint / ss-a11y / ss-review / ss-feedback / ss-update)](https://github.com/bitjaru/styleseed)** — Set up a design system, audit screens against Nielsen heuristics, lint for design-system violations, audit accessibility, add appropriate user-feedback states. The closest thing to having a design lead in your terminal.
+- **[theme-factory](https://github.com/anthropics/skills/tree/main/skills/theme-factory)** — Apply themes consistently across slides, docs, reports, HTML pages.
+- **[brand-guidelines](https://github.com/anthropics/skills/tree/main/skills/brand-guidelines)** — Anthropic's example skill for applying official brand colours and typography. Useful as a template for your own brand-guideline skill.
+
+### Design exploration
+
+- **huashu-design** — HTML-first hi-fi prototypes, design variants, slide decks, motion design. The skill that produces designs that don't look AI-generated. *Note: license restricts commercial/enterprise use — the author requires authorisation for for-profit deliverables. Personal use is fine. Check the SKILL.md license clause before deploying inside a paid product.*
 
 ### Visual & motion content
 
-- **[gsap](https://github.com/doodledood/claude-code-plugins/tree/main/claude-plugins/frontend-design/skills/gsap)** — GSAP animation reference: timelines, easing, ScrollTrigger, stagger. The library every animation tutorial assumes you already know.
-- **[canvas-design](https://github.com/anthropics/skills)** — Branded visual graphics (PNG/PDF) using a design philosophy rather than a template. Stat cards, social frames, infographics.
-- **[algorithmic-art](https://github.com/anthropics/skills)** — Generative art with p5.js + seeded randomness. Surprisingly useful for blog hero images and social cards that don't look stock.
-- **[image-generation](https://github.com/anthropics/skills)** — Optimised prompting patterns for Gemini and OpenAI image models. Stops you from generating expensive 2K images when 1K does the job.
+- **[canvas-design](https://github.com/anthropics/skills/tree/main/skills/canvas-design)** — Branded visual graphics (PNG/PDF) using a design philosophy rather than a template. Stat cards, social frames, infographics.
+- **[algorithmic-art](https://github.com/anthropics/skills/tree/main/skills/algorithmic-art)** — Generative art with p5.js + seeded randomness. Surprisingly useful for blog hero images and social cards that don't look stock.
+- **[GSAP](https://gsap.com/docs/)** — Not a Claude skill but the canonical animation library most front-end skills assume. Their docs are excellent; once you've read the ScrollTrigger page you can drop ten different "fancy scroll" effects without ceremony.
 
 ### Interactive things
 
-- **[web-artifacts-builder / interactive-tools-builder](https://github.com/anthropics/skills)** — Build calculators, demos, quizzes, mini-tools as React components on Tailwind. The "engineering as marketing" play, automated.
-- **[hyperframes](https://github.com/Royalti-io/hyperframes)** + **[hyperframes-cli](https://github.com/Royalti-io/hyperframes-cli)** — Video compositions, animations, voiceovers, audio-reactive visuals using Remotion. For when a screenshot doesn't sell it.
+- **[web-artifacts-builder](https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder)** — Build calculators, demos, quizzes, mini-tools as React components on Tailwind. The "engineering as marketing" play, automated.
+- **[frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)** — Production-grade UI generation with judgement about hierarchy, spacing, and rhythm — not just "render some Tailwind."
 
-### Research & content
+### API integration patterns
 
-- **[exa-integration](https://github.com/anthropics/skills)** — Exa AI search and Websets for prospect research, semantic search, list-building. Faster than Googling.
-- **[brightdata-integration](https://github.com/anthropics/skills)** — Bright Data web scraping via a CLI wrapper. For when you need real public data, not synthesised data.
-- **[claude-api](https://github.com/anthropics/skills)** — Build apps with the Claude API/Anthropic SDK. Includes prompt-caching patterns, model migration helpers, and batch APIs.
-- **[streaming](https://github.com/anthropics/skills)** — Server-Sent Events for Claude API. The right way to do real-time chat UIs.
+- **[claude-api](https://github.com/anthropics/skills/tree/main/skills/claude-api)** — Build apps with the Claude API/Anthropic SDK. Prompt caching, model migration, tool use, extended thinking, batch APIs.
 
 ### Documents & spreadsheets
 
-- **[pdf](https://github.com/anthropics/skills)** — Read, edit, merge, split, create PDFs. Form-fills, table extraction.
-- **[docx](https://github.com/anthropics/skills)** — Open, read, edit `.docx` files. For everything your lawyer or accountant sends.
-- **[xlsx](https://github.com/anthropics/skills)** — Spreadsheets — read, write, analyse. Pricing sheets, board financials, cap tables.
-- **[pptx](https://github.com/anthropics/skills)** — Build and edit PowerPoint decks. Pitch decks, investor updates.
+- **[pdf](https://github.com/anthropics/skills/tree/main/skills/pdf)** — Read, edit, merge, split, create PDFs. Form-fills, table extraction.
+- **[docx](https://github.com/anthropics/skills/tree/main/skills/docx)** — Open, read, edit `.docx` files. For everything your lawyer or accountant sends.
+- **[xlsx](https://github.com/anthropics/skills/tree/main/skills/xlsx)** — Spreadsheets — read, write, analyse. Pricing sheets, board financials, cap tables.
+- **[pptx](https://github.com/anthropics/skills/tree/main/skills/pptx)** — Build and edit PowerPoint decks. Pitch decks, investor updates.
 
 ### Foundation skills (almost everyone should install these)
 
-- **[skill-creator](https://github.com/anthropics/skills)** — Bootstraps the file structure for a new skill. Use this the first time you find yourself doing the same task by hand twice.
-- **[mcp-builder](https://github.com/anthropics/skills)** — Builds new MCP servers so Claude can talk to your own tools and data.
-- **[claude-code-patterns](https://github.com/anthropics/skills)** — The canonical reference for agents, skills, and slash commands. Read once even if you don't think you'll build any.
-- **[doc-coauthoring](https://github.com/anthropics/skills)** — Structured workflow for writing real documentation with Claude. Different from "generate me some docs."
-- **[webapp-testing](https://github.com/anthropics/skills)** — Playwright-based interaction and verification of local web apps. The fastest way to test a UI without learning testing frameworks.
+- **[skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator)** — Bootstraps the file structure for a new skill. Use this the first time you find yourself doing the same task by hand twice.
+- **[mcp-builder](https://github.com/anthropics/skills/tree/main/skills/mcp-builder)** — Builds new MCP servers so Claude can talk to your own tools and data.
+- **[doc-coauthoring](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring)** — Structured workflow for writing real documentation with Claude. Different from "generate me some docs."
+- **[webapp-testing](https://github.com/anthropics/skills/tree/main/skills/webapp-testing)** — Playwright-based interaction and verification of local web apps. The fastest way to test a UI without learning testing frameworks.
+- **[internal-comms](https://github.com/anthropics/skills/tree/main/skills/internal-comms)** — Templates for the most common internal communications (status updates, change announcements, decision memos).
+- **[slack-gif-creator](https://github.com/anthropics/skills/tree/main/skills/slack-gif-creator)** — Constraints + concepts for animated GIFs optimised for Slack. Useful when "let me show you" beats "let me explain."
+
+### Specialist patterns (mostly internal, but worth knowing exist)
+
+Some of the skills we use day-to-day live in private team plugin indexes — they're packaged for our specific workflows rather than published as standalone skills. Mentioned here for completeness; if you're at a team building similar infra, these are patterns worth replicating yourself:
+
+- **image-generation** — Optimised prompting patterns for Gemini and OpenAI image models, including model-selection heuristics (Gemini Flash for visual/creative, GPT Image for text-heavy)
+- **exa-integration** — [Exa AI](https://exa.ai/) search + Websets for semantic prospect research and list-building
+- **brightdata-integration** — [Bright Data](https://brightdata.com/) web scraping via a CLI wrapper for real public data
+- **streaming** — SSE streaming patterns for Claude API real-time interfaces
+- **hyperframes** + **hyperframes-cli** — Video compositions on top of Remotion (animations, voiceovers, audio-reactive visuals)
+
+If you're a non-technical founder and these sound interesting — they should — the [skill-creator](https://github.com/anthropics/skills/tree/main/skills/skill-creator) skill will help you write your own version in an afternoon.
 
 ## Libraries you'll keep reaching for
 
