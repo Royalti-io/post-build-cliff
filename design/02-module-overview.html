@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Concept · Module Overview — The Post-Build Cliff</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #F2EDE3;
+    --ink: #111111;
+    --sub: #5A554C;
+    --rust: #C2451F;
+    --teal: #2B5F5C;
+    --hairline: #1A1A1A22;
+    --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* Layout shell — Starlight-style sidebar + main */
+  .shell { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    border-right: 1px solid var(--ink);
+    padding: 24px 24px 48px;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .brand {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding-bottom: 18px; border-bottom: 1px solid var(--ink);
+    margin-bottom: 18px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .brand .logo {
+    font-family: var(--sans); font-weight: 800; font-size: 14px;
+    letter-spacing: -0.01em; color: var(--ink);
+    text-transform: none;
+  }
+  .brand .iss { color: var(--sub); }
+
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid var(--ink);
+    padding: 10px 12px;
+    margin-bottom: 24px;
+    background: rgba(17,17,17,0.02);
+    font-family: var(--mono); font-size: 12px;
+    color: var(--sub);
+  }
+  .search .kbd {
+    margin-left: auto;
+    border: 1px solid var(--hairline);
+    padding: 1px 6px; font-size: 10px; color: var(--sub);
+    background: var(--paper);
+  }
+
+  .nav-group { margin-bottom: 22px; }
+  .nav-group-title {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 10px;
+  }
+  .nav-item {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 7px 0; font-size: 14px; color: var(--ink);
+    border-left: 2px solid transparent;
+    padding-left: 10px; margin-left: -10px;
+  }
+  .nav-item .n {
+    font-family: var(--mono); font-size: 11px; color: var(--sub);
+    width: 22px; flex-shrink: 0;
+  }
+  .nav-item:hover { color: var(--rust); }
+  .nav-item.current {
+    border-left-color: var(--rust); color: var(--ink); font-weight: 600;
+  }
+  .nav-item.current .n { color: var(--rust); }
+
+  /* MAIN */
+  .main {
+    padding: 32px 56px 96px;
+    max-width: 980px;
+  }
+
+  .breadcrumbs {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 32px;
+  }
+  .breadcrumbs span.sep { margin: 0 8px; }
+  .breadcrumbs a:hover { color: var(--ink); }
+  .breadcrumbs .current { color: var(--rust); }
+
+  /* Module hero */
+  .mod-hero {
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 40px;
+    margin-bottom: 48px;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 32px;
+    align-items: end;
+  }
+  .mod-num {
+    font-family: var(--mono);
+    font-size: 96px;
+    font-weight: 500;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+  }
+  .mod-num .slash { color: var(--rust); }
+  .mod-meta {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 12px;
+    display: flex; gap: 18px;
+  }
+  .mod-meta .dot { color: var(--rust); }
+  .mod-hero h1 {
+    font-size: 64px; font-weight: 800; line-height: 1;
+    letter-spacing: -0.03em; margin: 0 0 18px;
+  }
+  .mod-hero .lede {
+    font-size: 20px; line-height: 1.45; max-width: 50ch;
+    color: var(--ink); margin: 0;
+  }
+
+  /* What you'll learn — strip */
+  .learn-strip {
+    border: 1px solid var(--ink);
+    padding: 28px 32px;
+    margin-bottom: 56px;
+    background: var(--paper);
+  }
+  .learn-strip .label {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .learn-strip .label::before {
+    content: ""; width: 18px; height: 1px; background: var(--rust);
+  }
+  .learn-strip ul {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px 32px;
+  }
+  .learn-strip li {
+    font-size: 16px; padding-left: 22px; position: relative;
+    line-height: 1.4;
+  }
+  .learn-strip li::before {
+    content: "→"; position: absolute; left: 0;
+    font-family: var(--mono); color: var(--rust);
+  }
+
+  /* Lessons table */
+  .lessons-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 18px;
+  }
+  .lessons-head h2 {
+    font-size: 13px; font-family: var(--mono);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--sub); margin: 0;
+  }
+  .lessons-head .count { font-family: var(--mono); font-size: 11px; color: var(--sub); }
+
+  .lesson {
+    display: grid;
+    grid-template-columns: 56px 1fr 100px 24px;
+    gap: 24px;
+    padding: 24px 0;
+    border-top: 1px solid var(--hairline);
+    align-items: center;
+    transition: background .15s ease;
+  }
+  .lesson:last-of-type { border-bottom: 1px solid var(--hairline); }
+  .lesson:hover { background: rgba(17,17,17,0.03); }
+  .lesson .ln {
+    font-family: var(--mono); font-size: 13px; color: var(--sub);
+    letter-spacing: 0.05em;
+  }
+  .lesson h3 {
+    font-size: 22px; font-weight: 700;
+    letter-spacing: -0.015em; margin: 0 0 4px;
+  }
+  .lesson .desc {
+    font-size: 14px; color: var(--sub); line-height: 1.5;
+    max-width: 60ch;
+  }
+  .lesson .time {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--sub); letter-spacing: 0.08em;
+    text-align: right;
+  }
+  .lesson .arr {
+    font-family: var(--mono); color: var(--ink);
+  }
+
+  .lesson.danger h3::after {
+    content: "⚠";
+    color: var(--rust); margin-left: 10px; font-size: 18px;
+    vertical-align: middle;
+  }
+
+  /* Sidebar callout — danger zone */
+  .danger-card {
+    border: 1px solid var(--rust);
+    padding: 24px 28px;
+    margin: 56px 0;
+    background: rgba(194, 69, 31, 0.04);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+  }
+  .danger-card .label {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 10px;
+  }
+  .danger-card h4 {
+    font-size: 22px; font-weight: 700;
+    margin: 0 0 6px; letter-spacing: -0.015em;
+  }
+  .danger-card p {
+    margin: 0; font-size: 14px; color: var(--sub); max-width: 56ch;
+  }
+  .danger-card .pill {
+    font-family: var(--mono); font-size: 11px;
+    border: 1px solid var(--rust); color: var(--rust);
+    padding: 8px 14px; letter-spacing: 0.1em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Next module */
+  .next {
+    border-top: 1px solid var(--ink);
+    padding-top: 32px; margin-top: 48px;
+    display: flex; justify-content: space-between; align-items: end;
+  }
+  .next .label {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 8px;
+  }
+  .next h4 {
+    font-size: 28px; font-weight: 700;
+    letter-spacing: -0.015em; margin: 0;
+  }
+  .next .arr-big {
+    font-family: var(--mono); font-size: 32px; color: var(--rust);
+  }
+
+  .concept-tag {
+    position: fixed; top: 14px; right: 14px;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    background: var(--ink); color: var(--paper);
+    padding: 6px 10px; z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="concept-tag">Concept · 02 Module Overview</div>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Post-Build Cliff</div>
+      <div class="iss">№ 001</div>
+    </div>
+
+    <div class="search">
+      <span style="color:var(--sub);">⌕</span>
+      <span>Search lessons…</span>
+      <span class="kbd">⌘K</span>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Start here</div>
+      <a class="nav-item" href="#"><span class="n">→</span> Introduction</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">01 — The Cliff</div>
+      <a class="nav-item current" href="#"><span class="n">01</span> Overview</a>
+      <a class="nav-item" href="#"><span class="n">02</span> Lost data &amp; exposed keys</a>
+      <a class="nav-item" href="#"><span class="n">03</span> Public repos by accident</a>
+      <a class="nav-item" href="#"><span class="n">04</span> The 11pm deploy</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">02 — Minimum Competence</div>
+      <a class="nav-item" href="#"><span class="n">01</span> Overview</a>
+      <a class="nav-item" href="#"><span class="n">02</span> Just-enough git</a>
+      <a class="nav-item" href="#"><span class="n">03</span> Env vars in prod</a>
+      <a class="nav-item" href="#"><span class="n">04</span> Reading logs</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">03 — The Hiring Line</div>
+      <a class="nav-item" href="#"><span class="n">01</span> Overview</a>
+      <a class="nav-item" href="#"><span class="n">02</span> Five hire-now signals</a>
+      <a class="nav-item" href="#"><span class="n">03</span> Who to hire when</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Reference</div>
+      <a class="nav-item" href="#"><span class="n">↗</span> Tools index</a>
+      <a class="nav-item" href="#"><span class="n">↗</span> Glossary</a>
+      <a class="nav-item" href="#"><span class="n">↗</span> Edit on GitHub</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="breadcrumbs">
+      <a href="#">Home</a>
+      <span class="sep">/</span>
+      <a href="#">Modules</a>
+      <span class="sep">/</span>
+      <span class="current">01 — The Cliff</span>
+    </div>
+
+    <!-- HERO -->
+    <div class="mod-hero">
+      <div class="mod-num">01<span class="slash">/</span>03</div>
+      <div>
+        <div class="mod-meta">
+          <span>Module One</span>
+          <span class="dot">●</span>
+          <span>4 lessons</span>
+          <span>·</span>
+          <span>~25 min</span>
+        </div>
+        <h1>The Cliff</h1>
+        <p class="lede">
+          Every "build an app in 20 minutes" tutorial ends where this module begins. Here's what the post-build cliff actually looks like — and how to tell you're standing near the edge.
+        </p>
+      </div>
+    </div>
+
+    <!-- WHAT YOU'LL LEARN -->
+    <div class="learn-strip">
+      <div class="label">What you'll walk away with</div>
+      <ul>
+        <li>Read and write a useful <code style="font-family:var(--mono);">.gitignore</code></li>
+        <li>Tell a private repo from a public one</li>
+        <li>Spot which of your keys are secrets</li>
+        <li>Know what a staging environment is for</li>
+        <li>Run a recurring data export</li>
+        <li>Recognise the five most common "11pm deploy" failures</li>
+      </ul>
+    </div>
+
+    <!-- LESSONS -->
+    <div class="lessons-head">
+      <h2>Lessons in this module</h2>
+      <span class="count">4 lessons</span>
+    </div>
+
+    <a href="#" class="lesson">
+      <div class="ln">01.01</div>
+      <div>
+        <h3>What the cliff looks like</h3>
+        <div class="desc">A ground-level tour of the five most common falls. If three apply to your current project, you're standing at the edge.</div>
+      </div>
+      <div class="time">8 min read</div>
+      <div class="arr">→</div>
+    </a>
+
+    <a href="#" class="lesson danger">
+      <div class="ln">01.02</div>
+      <div>
+        <h3>Lost data &amp; exposed keys</h3>
+        <div class="desc">The two falls that hurt the most and are easiest to prevent. Includes the rotation playbook for when it's already happened.</div>
+      </div>
+      <div class="time">12 min read</div>
+      <div class="arr">→</div>
+    </a>
+
+    <a href="#" class="lesson">
+      <div class="ln">01.03</div>
+      <div>
+        <h3>Public repos by accident</h3>
+        <div class="desc">How <code style="font-family:var(--mono);">.gitignore</code> works, why it doesn't always save you, and what to do when your <code style="font-family:var(--mono);">.env</code> is already on GitHub.</div>
+      </div>
+      <div class="time">10 min read</div>
+      <div class="arr">→</div>
+    </a>
+
+    <a href="#" class="lesson">
+      <div class="ln">01.04</div>
+      <div>
+        <h3>The 11pm deploy</h3>
+        <div class="desc">Why it works on preview and breaks in production. Environment parity, the rollback you didn't know you had, and the rule of three.</div>
+      </div>
+      <div class="time">9 min read</div>
+      <div class="arr">→</div>
+    </a>
+
+    <!-- DANGER CALLOUT -->
+    <div class="danger-card">
+      <div>
+        <div class="label">↯ Reality check</div>
+        <h4>If you've already pushed your <code style="font-family:var(--mono);background:rgba(194,69,31,0.1);padding:1px 5px;">.env</code> to GitHub</h4>
+        <p>Don't read the rest of this module. Jump to lesson 01.02 and rotate your keys first. Every minute matters; every key gets harvested.</p>
+      </div>
+      <a href="#" class="pill">→ Go to 01.02</a>
+    </div>
+
+    <!-- NEXT -->
+    <div class="next">
+      <div>
+        <div class="label">Up next · Module Two</div>
+        <h4>Minimum Competence</h4>
+      </div>
+      <a href="#" class="arr-big">→</a>
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>

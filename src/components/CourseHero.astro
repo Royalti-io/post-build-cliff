@@ -1,0 +1,267 @@
+---
+// CourseHero.astro — bespoke editorial landing with pinned-narrative scrollytelling
+// Pattern: side-by-side sticky (the scrollytelling skill's #1 standard pattern)
+// Scroll mechanics: IntersectionObserver (most reliable, lightest payload, mobile-safe)
+// Reveals: native CSS scroll-driven animations with reduced-motion fallback
+---
+
+<div class="pbc-container">
+
+  <!-- HERO -->
+  <section class="pbc-hero">
+    <div class="pbc-hero-grid">
+      <div>
+        <div class="pbc-eyebrow">Caution / Read before deploy</div>
+        <h1 class="pbc-title">What happens <em>after</em> the thing you vibe-coded actually works.</h1>
+        <p class="pbc-lede">
+          A small, free, opinionated course for <strong>non-technical founders</strong> shipping AI-built software into the real world. Written by people who fell off the cliff first.
+        </p>
+        <div class="pbc-cta-row">
+          <a href="/01-the-cliff/overview/" class="pbc-btn">Start with the cliff →</a>
+          <a href="/03-hiring-line/overview/" class="pbc-btn ghost">Skip to the hiring line ↗</a>
+        </div>
+      </div>
+
+      <div class="pbc-topo">
+        <span class="label tl">Fig. 01 · Cross-section</span>
+        <span class="label tr">Elev. ~ build → prod</span>
+        <span class="label br">↓ steep gradient</span>
+        <svg viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true">
+          <g stroke="#1A1A1A" fill="none" stroke-width="1">
+            <path d="M 0 80 Q 200 70, 360 100 T 600 110" />
+            <path d="M 0 130 Q 220 120, 370 150 T 600 165" />
+            <path d="M 0 180 Q 240 170, 380 200 T 600 220" />
+            <path d="M 0 230 Q 260 220, 390 250 T 600 275" />
+          </g>
+          <path d="M 0 280 L 320 280 L 360 380 L 600 380 L 600 400 L 0 400 Z" fill="#1A1A1A" />
+          <g stroke="#F2EDE3" stroke-width="1.4" fill="none">
+            <path d="M 320 280 L 326 290 L 332 285 L 340 300 L 348 290 L 356 305 L 360 295 L 360 380" />
+          </g>
+          <g transform="translate(295, 252)">
+            <rect x="0" y="0" width="2" height="28" fill="#1A1A1A" />
+            <circle cx="1" cy="-6" r="4" fill="#1A1A1A" />
+          </g>
+          <line x1="362" y1="288" x2="430" y2="240" stroke="#C2451F" stroke-width="1" />
+          <circle cx="362" cy="288" r="3" fill="#C2451F" />
+        </svg>
+        <div class="marker" style="top: 230px; right: 140px;"><span class="dot"></span>You are here</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEFINITION -->
+  <section class="pbc-definition pbc-reveal">
+    <div class="term">Cliff, n.</div>
+    <div class="body">
+      The gap between <em>"it works on my screen"</em> and <em>"it survives a real user, a real domain, a real tomorrow morning."</em> Most "build an app in 20 minutes" videos end where this course begins.
+    </div>
+  </section>
+
+  <!-- SCROLLYTELLING — PINNED NARRATIVE: 5 falls -->
+  <section class="pbc-scrolly" id="scrolly" aria-label="The five most common falls">
+    <div class="pbc-scrolly-head">
+      <h2>Five ways founders fall off.</h2>
+      <span class="meta">Scroll to walk through each →</span>
+    </div>
+
+    <div class="pbc-scrolly-grid">
+      <!-- LEFT: scrolling narrative -->
+      <div class="pbc-scrolly-text" id="scrolly-text">
+        <div class="pbc-scrolly-step is-active" data-step="0">
+          <div>
+            <span class="step-num">Fall · 01</span>
+            <h3>Secrets in a public repo.</h3>
+            <p>You pushed your <code>.env</code> to GitHub. Your OpenAI key, Stripe key, and database password are now scraped within <strong>five minutes</strong>. Bots watch the GitHub event firehose for new keys; the rotation playbook is the only path back.</p>
+          </div>
+        </div>
+
+        <div class="pbc-scrolly-step" data-step="1">
+          <div>
+            <span class="step-num">Fall · 02</span>
+            <h3>Data loss with no backup.</h3>
+            <p>The platform you built on (Replit, Bolt, Lovable) lost or migrated state. There was no export. The work is gone. The first backup you make doesn't count — only the first one you've successfully <em>restored</em> from does.</p>
+          </div>
+        </div>
+
+        <div class="pbc-scrolly-step" data-step="2">
+          <div>
+            <span class="step-num">Fall · 03</span>
+            <h3>No version control.</h3>
+            <p>You can't roll back a bad change because every change overwrote the last one. Git isn't an engineering luxury — it's the only honest record of what you built and why.</p>
+          </div>
+        </div>
+
+        <div class="pbc-scrolly-step" data-step="3">
+          <div>
+            <span class="step-num">Fall · 04</span>
+            <h3>Deploys that break in prod but not preview.</h3>
+            <p>Environment differences you didn't know existed. Different node versions, different env vars, different timezones. The bug isn't in your code — it's in the gap between two machines you treated as identical.</p>
+          </div>
+        </div>
+
+        <div class="pbc-scrolly-step" data-step="4">
+          <div>
+            <span class="step-num">Fall · 05</span>
+            <h3>A user submits real data and you don't know what applies.</h3>
+            <p>GDPR? PII? Payment data? The moment a real human's information lives in your system you're technically liable, whether you knew the rules or not. Compliance is a line you cross, not a feature you ship.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: pinned visual -->
+      <div class="pbc-scrolly-visual" aria-hidden="true">
+        <div class="frame is-active" data-step="0">
+          <div class="marker">↯ Fall 01</div>
+          <p class="big"><span class="strike">sk-1234567890abcdef</span></p>
+        </div>
+        <div class="frame" data-step="1">
+          <div class="marker">↯ Fall 02</div>
+          <p class="big">No export.<br>No backup.<br>No project.</p>
+        </div>
+        <div class="frame" data-step="2">
+          <div class="marker">↯ Fall 03</div>
+          <p class="big">git&nbsp;log<br><span class="strike">→ nothing</span></p>
+        </div>
+        <div class="frame" data-step="3">
+          <div class="marker">↯ Fall 04</div>
+          <p class="big">works on<br>preview.<br>breaks at<br>11:42 pm.</p>
+        </div>
+        <div class="frame" data-step="4">
+          <div class="marker">↯ Fall 05</div>
+          <p class="big">the user<br>didn't<br>consent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <section class="pbc-pullquote pbc-reveal">
+    <blockquote>
+      You don't need to <span class="strike">become an engineer</span>. You need to know exactly where your competence should stop.
+    </blockquote>
+    <div class="attr">— The thesis of this course</div>
+  </section>
+
+  <!-- MODULES -->
+  <section class="pbc-toc" id="modules">
+    <div class="pbc-toc-head">
+      <h2>Three modules</h2>
+      <span class="meta">~ 90 minutes total · Read in any order</span>
+    </div>
+
+    <a href="/01-the-cliff/overview/" class="pbc-module">
+      <div class="num">01</div>
+      <div>
+        <div class="sub">Module One</div>
+        <h3>The Cliff</h3>
+      </div>
+      <div class="desc">
+        What the post-build cliff actually is. Lost data, exposed keys, public repos, broken 11pm deploys — and how to spot you're standing near the edge.
+      </div>
+      <div class="skills">
+        <b>You'll learn</b>
+        Reading .gitignore<br>
+        Private vs public repos<br>
+        What a secret is<br>
+        Why staging exists
+      </div>
+    </a>
+
+    <a href="/02-minimum-competence/overview/" class="pbc-module">
+      <div class="num">02</div>
+      <div>
+        <div class="sub">Module Two</div>
+        <h3>Minimum Competence</h3>
+      </div>
+      <div class="desc">
+        The smallest viable curriculum for a founder. Five non-negotiables, a "not yet" list of things you're tempted to learn but shouldn't, and the fastest way through each.
+      </div>
+      <div class="skills">
+        <b>You'll learn</b>
+        Just-enough git<br>
+        Env vars in production<br>
+        Deploy from a branch<br>
+        Reading logs<br>
+        Restoring a backup
+      </div>
+    </a>
+
+    <a href="/03-hiring-line/overview/" class="pbc-module">
+      <div class="num">03</div>
+      <div>
+        <div class="sub">Module Three</div>
+        <h3>The Hiring Line</h3>
+      </div>
+      <div class="desc">
+        Where learning stops being an investment and starts being a hiring decision. How to spot the line, and how to evaluate someone you can't out-code.
+      </div>
+      <div class="skills">
+        <b>You'll learn</b>
+        Five hire-now signals<br>
+        Contractor vs fractional CTO<br>
+        Agency vs full-time<br>
+        Four interview questions
+      </div>
+    </a>
+  </section>
+
+  <!-- FIELD NOTES -->
+  <section class="pbc-field">
+    <div class="note pbc-reveal">
+      <div class="label">Field note · 01</div>
+      <h4>Free, forever.</h4>
+      <p>No email gate, no upsell, no "premium tier." If you found this useful, send it to one founder who needs it more than you did.</p>
+    </div>
+    <div class="note pbc-reveal">
+      <div class="label">Field note · 02</div>
+      <h4>Living document.</h4>
+      <p>Tools change fast. Lessons live on GitHub as plain markdown. Spotted something stale? Open a PR — your name goes in the contributors list.</p>
+    </div>
+    <div class="note pbc-reveal">
+      <div class="label">Field note · 03</div>
+      <h4>Searchable, offline.</h4>
+      <p>Hit <code>⌘K</code> from anywhere. Search runs in the browser — your queries don't leave your laptop.</p>
+    </div>
+  </section>
+</div>
+
+<footer class="pbc-footer">
+  <div>The Post-Build Cliff · Issue 001</div>
+  <div style="text-align:center;">CC BY-SA 4.0 · Use anywhere</div>
+  <div style="text-align:right;"><a href="https://github.com/Royalti-io/post-build-cliff" style="color:inherit;text-decoration:none;">github.com/Royalti-io/post-build-cliff →</a></div>
+</footer>
+
+<script>
+  // Scrollytelling step tracker — IntersectionObserver pattern
+  // Per skill: prefer IO over scroll listeners (mobile iOS fires scroll at end of momentum, not during)
+  (() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return; // skill mandate: respect reduced-motion preference
+
+    const steps = document.querySelectorAll<HTMLElement>('.pbc-scrolly-step');
+    const frames = document.querySelectorAll<HTMLElement>('.pbc-scrolly-visual .frame');
+    if (!steps.length || !frames.length) return;
+
+    const setActive = (idx: number) => {
+      steps.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      frames.forEach((f, i) => f.classList.toggle('is-active', i === idx));
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        // pick the entry closest to viewport center
+        const intersecting = entries.filter((e) => e.isIntersecting);
+        if (!intersecting.length) return;
+        const top = intersecting.sort(
+          (a, b) => Math.abs(a.boundingClientRect.top - window.innerHeight / 2)
+                  - Math.abs(b.boundingClientRect.top - window.innerHeight / 2)
+        )[0];
+        const idx = Number((top.target as HTMLElement).dataset.step || 0);
+        setActive(idx);
+      },
+      { threshold: [0.3, 0.5, 0.7], rootMargin: '-20% 0px -20% 0px' }
+    );
+
+    steps.forEach((s) => io.observe(s));
+  })();
+</script>

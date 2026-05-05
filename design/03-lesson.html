@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Concept · Lesson — The Post-Build Cliff</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #F2EDE3;
+    --ink: #111111;
+    --sub: #5A554C;
+    --rust: #C2451F;
+    --teal: #2B5F5C;
+    --hairline: #1A1A1A22;
+    --code-bg: #1A1A1A;
+    --code-fg: #F2EDE3;
+    --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  .shell { display: grid; grid-template-columns: 280px 1fr 240px; min-height: 100vh; }
+
+  /* SIDEBAR — same as overview, condensed */
+  .sidebar {
+    border-right: 1px solid var(--ink);
+    padding: 24px 24px 48px;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .brand {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding-bottom: 18px; border-bottom: 1px solid var(--ink);
+    margin-bottom: 18px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .brand .logo {
+    font-family: var(--sans); font-weight: 800; font-size: 14px;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .brand .iss { color: var(--sub); }
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid var(--ink); padding: 10px 12px;
+    margin-bottom: 24px;
+    font-family: var(--mono); font-size: 12px; color: var(--sub);
+  }
+  .search .kbd { margin-left: auto; border: 1px solid var(--hairline);
+    padding: 1px 6px; font-size: 10px; color: var(--sub); }
+  .nav-group { margin-bottom: 22px; }
+  .nav-group-title {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 10px;
+  }
+  .nav-item {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 7px 0; font-size: 14px;
+    border-left: 2px solid transparent;
+    padding-left: 10px; margin-left: -10px;
+  }
+  .nav-item .n {
+    font-family: var(--mono); font-size: 11px; color: var(--sub);
+    width: 22px; flex-shrink: 0;
+  }
+  .nav-item:hover { color: var(--rust); }
+  .nav-item.current {
+    border-left-color: var(--rust); font-weight: 600;
+  }
+  .nav-item.current .n { color: var(--rust); }
+
+  /* MAIN */
+  .main {
+    padding: 32px 64px 96px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .crumbs {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 40px;
+  }
+  .crumbs .sep { margin: 0 8px; }
+  .crumbs .current { color: var(--rust); }
+
+  /* Lesson header */
+  .lesson-header {
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+  .lesson-meta {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 16px;
+    display: flex; gap: 18px; align-items: center;
+  }
+  .lesson-meta .num { color: var(--rust); font-weight: 700; }
+  .lesson-meta .dot { color: var(--rust); }
+  .lesson-header h1 {
+    font-size: 52px; font-weight: 800; line-height: 1.02;
+    letter-spacing: -0.025em; margin: 0 0 16px;
+  }
+  .lesson-header .lede {
+    font-size: 20px; color: var(--ink); line-height: 1.45;
+    max-width: 50ch; margin: 0; color: var(--sub);
+  }
+
+  /* Body typography */
+  .body h2 {
+    font-size: 30px; font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 64px 0 16px;
+    line-height: 1.15;
+  }
+  .body h2 .marker {
+    font-family: var(--mono); font-size: 13px;
+    color: var(--rust); display: block; margin-bottom: 6px;
+    letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500;
+  }
+  .body h3 {
+    font-size: 20px; font-weight: 700;
+    margin: 36px 0 12px; letter-spacing: -0.01em;
+  }
+  .body p { margin: 0 0 18px; }
+  .body p code, .body li code {
+    font-family: var(--mono); font-size: 0.9em;
+    background: rgba(17,17,17,0.06);
+    padding: 2px 6px; border-radius: 0;
+  }
+  .body strong { font-weight: 700; }
+  .body em { font-style: italic; }
+
+  .body ol, .body ul {
+    margin: 0 0 24px; padding-left: 0; list-style: none;
+    counter-reset: ol-counter;
+  }
+  .body ol li {
+    position: relative; padding-left: 36px; margin-bottom: 14px;
+    counter-increment: ol-counter;
+  }
+  .body ol li::before {
+    content: counter(ol-counter, decimal-leading-zero);
+    position: absolute; left: 0; top: 2px;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--rust); font-weight: 700; letter-spacing: 0.05em;
+  }
+  .body ul li {
+    position: relative; padding-left: 24px; margin-bottom: 10px;
+  }
+  .body ul li::before {
+    content: "—"; position: absolute; left: 0;
+    color: var(--sub); font-family: var(--mono);
+  }
+
+  /* Code blocks */
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    padding: 24px 28px;
+    margin: 28px 0;
+    overflow-x: auto;
+    font-family: var(--mono); font-size: 14px; line-height: 1.6;
+    position: relative;
+  }
+  pre::before {
+    content: attr(data-label);
+    position: absolute; top: 0; right: 0;
+    background: var(--rust); color: var(--paper);
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 4px 10px;
+  }
+  pre .cm { color: #8C8478; }
+  pre .kw { color: #E89B5F; }
+  pre .str { color: #BFC27A; }
+
+  /* Callouts */
+  .callout {
+    border-left: 3px solid var(--rust);
+    background: rgba(194, 69, 31, 0.05);
+    padding: 20px 24px;
+    margin: 32px 0;
+  }
+  .callout .label {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 6px; font-weight: 700;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .callout.calm {
+    border-left-color: var(--teal);
+    background: rgba(43, 95, 92, 0.05);
+  }
+  .callout.calm .label { color: var(--teal); }
+
+  /* Pull quote */
+  .pull {
+    margin: 56px 0;
+    padding: 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 32px 0;
+  }
+  .pull q {
+    font-size: 32px; font-weight: 700;
+    line-height: 1.2; letter-spacing: -0.02em;
+    quotes: """ """;
+    display: block;
+  }
+  .pull q::before { content: open-quote; color: var(--rust); }
+  .pull q::after { content: close-quote; color: var(--rust); }
+
+  /* Skills/References footer */
+  .lesson-footer {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid var(--ink);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  .lesson-footer h4 {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--rust); margin: 0 0 14px;
+    border-bottom: 1px solid var(--rust);
+    padding-bottom: 8px;
+  }
+  .lesson-footer ul { margin: 0; padding: 0; list-style: none; }
+  .lesson-footer ul li {
+    padding: 6px 0; font-size: 14px;
+    line-height: 1.45;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .lesson-footer ul li::before { display: none; }
+  .lesson-footer .arr {
+    font-family: var(--mono); color: var(--rust);
+    margin-left: 6px;
+  }
+
+  /* Pager — prev/next */
+  .pager {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .pager a {
+    border: 1px solid var(--ink);
+    padding: 18px 22px;
+    transition: background .15s ease;
+  }
+  .pager a:hover { background: var(--ink); color: var(--paper); }
+  .pager .label {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 6px;
+  }
+  .pager a:hover .label { color: var(--paper); }
+  .pager .title { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .pager .next { text-align: right; }
+
+  /* TOC sidebar (right) */
+  .toc-side {
+    border-left: 1px solid var(--ink);
+    padding: 32px 24px;
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    font-size: 13px;
+  }
+  .toc-side .title {
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--sub); margin-bottom: 16px;
+    padding-bottom: 12px; border-bottom: 1px solid var(--ink);
+  }
+  .toc-side a {
+    display: block; padding: 6px 0;
+    color: var(--sub); border-left: 2px solid transparent;
+    padding-left: 10px; margin-left: -10px;
+    line-height: 1.4;
+  }
+  .toc-side a:hover { color: var(--ink); }
+  .toc-side a.active {
+    color: var(--rust); border-left-color: var(--rust); font-weight: 600;
+  }
+  .toc-side .progress {
+    margin-top: 32px; padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+    font-family: var(--mono); font-size: 11px; color: var(--sub);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .toc-side .progress .bar {
+    margin-top: 10px; height: 2px; background: var(--hairline); position: relative;
+  }
+  .toc-side .progress .bar::after {
+    content: ""; position: absolute; left: 0; top: 0;
+    width: 38%; height: 100%; background: var(--rust);
+  }
+
+  .concept-tag {
+    position: fixed; top: 14px; right: 14px;
+    font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    background: var(--ink); color: var(--paper);
+    padding: 6px 10px; z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="concept-tag">Concept · 03 Lesson</div>
+
+<div class="shell">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">Post-Build Cliff</div>
+      <div class="iss">№ 001</div>
+    </div>
+    <div class="search">
+      <span style="color:var(--sub);">⌕</span>
+      <span>Search lessons…</span>
+      <span class="kbd">⌘K</span>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">01 — The Cliff</div>
+      <a class="nav-item" href="#"><span class="n">01</span> Overview</a>
+      <a class="nav-item current" href="#"><span class="n">02</span> Lost data &amp; exposed keys</a>
+      <a class="nav-item" href="#"><span class="n">03</span> Public repos by accident</a>
+      <a class="nav-item" href="#"><span class="n">04</span> The 11pm deploy</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">02 — Minimum Competence</div>
+      <a class="nav-item" href="#"><span class="n">01</span> Overview</a>
+      <a class="nav-item" href="#"><span class="n">02</span> Just-enough git</a>
+      <a class="nav-item" href="#"><span class="n">03</span> Env vars in prod</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">03 — The Hiring Line</div>
+      <a class="nav-item" href="#"><span class="n">01</span> Overview</a>
+      <a class="nav-item" href="#"><span class="n">02</span> Five hire-now signals</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="crumbs">
+      <a href="#">Home</a><span class="sep">/</span>
+      <a href="#">01 — The Cliff</a><span class="sep">/</span>
+      <span class="current">Lost data &amp; exposed keys</span>
+    </div>
+
+    <header class="lesson-header">
+      <div class="lesson-meta">
+        <span class="num">Lesson 01.02</span>
+        <span class="dot">●</span>
+        <span>12 min read</span>
+        <span>·</span>
+        <span>Last updated 2026-05-05</span>
+      </div>
+      <h1>Lost data &amp; exposed keys</h1>
+      <p class="lede">
+        The two falls that hurt the most and are the easiest to prevent. Read this before you push anything to a public repo, and once a quarter after that.
+      </p>
+    </header>
+
+    <article class="body">
+
+      <p>A "key" is a password your app uses to talk to other services — Stripe, OpenAI, your database. If it ends up in a public place, anyone can use your account on your dime. The bots that scrape GitHub for keys are <em>fast</em>: published key to first unauthorised use is often under five minutes.</p>
+
+      <h2 id="exposed-keys"><span class="marker">§ 01</span> Exposed keys</h2>
+
+      <p>You will hear two kinds of advice about keys. The first is "rotate them." The second is "use a secret manager." Both are correct. Neither will help you if the rule below isn't internalised first.</p>
+
+      <h3>The minimum rule</h3>
+
+      <p>If a value would let someone else <strong>spend your money</strong> or <strong>read your users' data</strong>, it goes in a <code>.env</code> file, never in the code, and <code>.env</code> goes in <code>.gitignore</code>.</p>
+
+<pre data-label=".env"><span class="cm"># .env — never commit this</span>
+OPENAI_API_KEY=<span class="str">sk-…</span>
+STRIPE_SECRET_KEY=<span class="str">sk_live_…</span>
+DATABASE_URL=<span class="str">postgres://…</span>
+
+<span class="cm"># .gitignore — always commit this</span>
+<span class="kw">.env</span>
+<span class="kw">.env.*</span>
+<span class="kw">!.env.example</span></pre>
+
+      <div class="callout">
+        <div class="label">↯ If it's already happened</div>
+        <p>Don't try to "remove the commit." Assume the key is already harvested. Rotate every key in the providers' dashboards <em>first</em>, then clean up the repo.</p>
+      </div>
+
+      <h3>Recovery in three steps</h3>
+
+      <ol>
+        <li><strong>Rotate every key</strong> in the providers' dashboards. Stripe, OpenAI, your DB host — each has a "regenerate" or "revoke" button.</li>
+        <li><strong>Move the secrets out of the code</strong> into environment variables in your hosting provider (Cloudflare, Vercel, Railway, etc.).</li>
+        <li><strong>Verify with <code>git status</code></strong> that <code>.env</code> is no longer tracked. If it still is, run <code>git rm --cached .env</code> and commit the change.</li>
+      </ol>
+
+      <div class="pull">
+        <q>Don't try to remove the commit. Assume the key is already harvested.</q>
+      </div>
+
+      <h2 id="lost-data"><span class="marker">§ 02</span> Lost data</h2>
+
+      <p>Platforms churn. Their free tiers change. Their databases reset. <strong>If your data only lives in one place, it doesn't really exist.</strong></p>
+
+      <h3>The minimum rule</h3>
+
+      <p>Anything you'd cry about losing gets exported on a schedule you actually run. Three categories:</p>
+
+      <ul>
+        <li><strong>Database</strong> — daily dump to your own cloud storage (R2, S3, B2)</li>
+        <li><strong>Uploaded files</strong> — mirrored to object storage you control</li>
+        <li><strong>Code</strong> — pushed to GitHub at least daily, in a private repo until you mean it to be public</li>
+      </ul>
+
+      <div class="callout calm">
+        <div class="label">↳ Sanity check</div>
+        <p>If you can't answer <em>"where would I get this back from if the platform disappeared tonight"</em> — you don't have a backup. You have a bet.</p>
+      </div>
+
+      <p>The first backup you make doesn't count. The first one you've successfully <em>restored</em> from does. Restore it once, on a non-production copy. Then you have a backup.</p>
+
+    </article>
+
+    <!-- LESSON FOOTER · skills + references -->
+    <footer class="lesson-footer">
+      <div>
+        <h4>Skills you've picked up</h4>
+        <ul>
+          <li>Generating &amp; rotating API keys safely <span class="arr">→</span></li>
+          <li>Setting up a recurring database export <span class="arr">→</span></li>
+          <li>Verifying <code style="font-family:var(--mono);">.gitignore</code> is doing its job <span class="arr">→</span></li>
+          <li>Reasoning about backup restore — not just backup <span class="arr">→</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>References &amp; further reading</h4>
+        <ul>
+          <li>The Twelve-Factor App · Config <span class="arr">↗</span></li>
+          <li>GitHub · Removing sensitive data from a repository <span class="arr">↗</span></li>
+          <li>Cloudflare R2 · Daily DB dump tutorial <span class="arr">↗</span></li>
+          <li>OWASP · Secrets management cheat sheet <span class="arr">↗</span></li>
+        </ul>
+      </div>
+    </footer>
+
+    <!-- PAGER -->
+    <nav class="pager">
+      <a href="#">
+        <div class="label">← Previous</div>
+        <div class="title">What the cliff looks like</div>
+      </a>
+      <a href="#" class="next">
+        <div class="label">Next →</div>
+        <div class="title">Public repos by accident</div>
+      </a>
+    </nav>
+
+  </main>
+
+  <!-- RIGHT — TOC -->
+  <aside class="toc-side">
+    <div class="title">On this page</div>
+    <a href="#exposed-keys" class="active">§ 01 · Exposed keys</a>
+    <a href="#" style="padding-left: 24px;">The minimum rule</a>
+    <a href="#" style="padding-left: 24px;">Recovery in three steps</a>
+    <a href="#lost-data">§ 02 · Lost data</a>
+    <a href="#" style="padding-left: 24px;">The minimum rule</a>
+    <a href="#" style="padding-left: 24px;">Restore once</a>
+
+    <div class="progress">
+      <div>Module 01 · 38% complete</div>
+      <div class="bar"></div>
+    </div>
+  </aside>
+
+</div>
+
+</body>
+</html>

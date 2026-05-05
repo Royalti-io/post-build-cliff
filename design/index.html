@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>The Post-Build Cliff — Design Concepts</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #F2EDE3;
+    --ink: #111111;
+    --sub: #5A554C;
+    --rust: #C2451F;
+    --hairline: #1A1A1A22;
+    --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+  a { color: inherit; text-decoration: none; }
+  .header {
+    border-bottom: 1px solid var(--ink);
+    padding: 20px 32px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .header .left { color: var(--ink); }
+  .header .right { color: var(--sub); }
+  main { padding: 56px 32px 80px; max-width: 1400px; margin: 0 auto; }
+  h1 {
+    font-size: 56px; font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.05; margin: 0 0 20px;
+  }
+  h1 em { font-style: italic; color: var(--rust); }
+  .lede { font-size: 18px; color: var(--sub); max-width: 60ch; margin: 0 0 56px; line-height: 1.5; }
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+  }
+  .card {
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    overflow: hidden;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
+  .card iframe {
+    width: 100%; height: 480px; border: 0; display: block;
+    border-bottom: 1px solid var(--ink);
+    pointer-events: none;
+    transform: scale(0.5); transform-origin: 0 0;
+    width: 200%; height: 960px;
+  }
+  .card .meta { padding: 18px 22px; }
+  .card .num {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--rust); margin-bottom: 8px;
+  }
+  .card h3 { font-size: 22px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.015em; }
+  .card .desc { font-size: 13px; color: var(--sub); line-height: 1.5; }
+  .card .open {
+    display: inline-block; margin-top: 14px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 2px;
+  }
+  .notes { margin-top: 80px; border-top: 1px solid var(--ink); padding-top: 32px; }
+  .notes h2 { font-size: 13px; font-family: var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--sub); margin: 0 0 20px; }
+  .notes p { max-width: 70ch; font-size: 15px; line-height: 1.6; color: var(--ink); margin: 0 0 14px; }
+  .notes code { font-family: var(--mono); background: rgba(17,17,17,0.06); padding: 2px 6px; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="left">Design Concepts · The Post-Build Cliff</div>
+  <div class="right">3 concepts · Plus Jakarta Sans + JetBrains Mono</div>
+</header>
+
+<main>
+  <h1>Three concepts. Editorial / zine meets <em>technical doc</em>.</h1>
+  <p class="lede">
+    Calm, honest, slightly punk. No SaaS pastels, no rounded-card-with-left-border, no emoji icons. Warm paper background, dense but unhurried typography, monospace metadata, rust accent reserved for things that actually deserve attention.
+  </p>
+
+  <div class="grid">
+    <a href="01-landing.html" target="_blank" class="card">
+      <iframe src="01-landing.html" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+      <div class="meta">
+        <div class="num">Concept 01</div>
+        <h3>Landing / Hero</h3>
+        <div class="desc">Editorial masthead, oversized italic headline, hand-drawn cliff cross-section, pull quote with strikethrough, three field notes at the foot. The "share this with one founder" page.</div>
+        <div class="open">Open full →</div>
+      </div>
+    </a>
+
+    <a href="02-module-overview.html" target="_blank" class="card">
+      <iframe src="02-module-overview.html" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+      <div class="meta">
+        <div class="num">Concept 02</div>
+        <h3>Module Overview</h3>
+        <div class="desc">Starlight-style sidebar with numbered nav, oversized 01/03 module number, lessons as a tabular index, a rust-bordered "reality check" callout for triage cases. Where someone lands from the home page.</div>
+        <div class="open">Open full →</div>
+      </div>
+    </a>
+
+    <a href="03-lesson.html" target="_blank" class="card">
+      <iframe src="03-lesson.html" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+      <div class="meta">
+        <div class="num">Concept 03</div>
+        <h3>Lesson Page</h3>
+        <div class="desc">Three-column with right-side TOC + progress bar. Numbered ordered lists, dark code blocks with rust corner labels, two callout flavours (warning rust + calm teal), full-width pull quote, skills/references footer.</div>
+        <div class="open">Open full →</div>
+      </div>
+    </a>
+  </div>
+
+  <section class="notes">
+    <h2>Design language notes</h2>
+    <p><strong>Palette.</strong> Warm paper <code>#F2EDE3</code>, ink <code>#111</code>, sub-ink <code>#5A554C</code>, rust accent <code>#C2451F</code>, calm teal <code>#2B5F5C</code>. The rust does the punk work; teal earns its keep on positive callouts. No gradients anywhere.</p>
+    <p><strong>Typography.</strong> Plus Jakarta Sans for everything, with weight contrast (400/700/800) doing what most sites use a second display face for. JetBrains Mono is the "field labels" voice — chapter numbers, metadata, code, ALL-CAPS small labels. Italic is reserved for emphasis, not decoration.</p>
+    <p><strong>Structure.</strong> Numbered lists with leading-zero counters (<code>01.02.03</code>), hairline rules between rows instead of cards-with-borders, generous vertical rhythm. The whole site reads like a physical zine — issue masthead at the top, field notes at the bottom, dense middle.</p>
+    <p><strong>What's deliberately absent.</strong> No icons. No emoji. No gradients. No pill badges. No "feature card with icon + title + description." No glassmorphism. No drop shadows on cards (only on hover, as a tactile zine offset). No avatars. No testimonials slot. Nothing that says "I was made by an AI in 2024."</p>
+    <p><strong>Next step.</strong> Pick one, mix two ("the lesson layout but with concept 01's pullquote treatment"), or push a direction further. These are starting points, not finals.</p>
+  </section>
+</main>
+
+</body>
+</html>
