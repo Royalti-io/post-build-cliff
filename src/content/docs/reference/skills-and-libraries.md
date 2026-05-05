@@ -26,9 +26,54 @@ Install: `git clone` the repo, then drop the skill folder into `~/.claude/skills
 
 ## Community skills worth installing
 
-- **[scrollytelling](https://github.com/doodledood/claude-code-plugins/tree/main/claude-plugins/frontend-design/skills/scrollytelling)** — Pinned-narrative landing pages, scroll-driven storytelling. Used to build *this* site's landing page.
-- **[claude-code-patterns](https://github.com/anthropics/skills)** — Reference for creating your own agents, skills, and slash commands.
-- **[doc-coauthoring](https://github.com/anthropics/skills)** — Structured workflow for writing documentation with Claude.
+These are skills we (or the contributors) use on real projects. Listed roughly in order of "install first." Each one extends Claude Code with patterns or domain knowledge that would otherwise take you weeks to gather.
+
+### Building & shipping
+
+- **[scrollytelling](https://github.com/doodledood/claude-code-plugins/tree/main/claude-plugins/frontend-design/skills/scrollytelling)** — Pinned-narrative landing pages, scroll-driven storytelling, parallax. Used to build *this* site's landing page.
+- **[shadcn](https://github.com/jpcraco/claude-code-plugins/tree/main/claude-plugins/shadcn)** — Search, install, debug, and compose [shadcn/ui](https://ui.shadcn.com/) components. The fastest way to a polished UI on top of Tailwind.
+- **[huashu-design](https://github.com/doodledood/claude-code-plugins/tree/main/claude-plugins/frontend-design/skills/huashu-design)** — Hi-fi prototypes, design variants, slide decks, motion design — all using HTML as the medium. The skill that produces designs that don't look AI-generated.
+- **[claude-design](https://claude.ai/design)** — Anthropic's hosted design tool for pitch decks, prototypes, one-pagers, marketing pages, and interactive explainers. Best zero-to-prototype path.
+
+### Design system discipline
+
+- **[ss-setup / ss-audit / ss-lint / ss-a11y / ss-review / ss-feedback / ss-update](https://github.com/Royalti-io/styleseed)** — The "StyleSeed" suite. Set up a design system, audit screens against Nielsen heuristics, lint for design-system violations, audit accessibility, add appropriate user-feedback states. The closest thing to having a design lead in your terminal.
+- **[theme-factory](https://github.com/anthropics/skills)** — Apply themes consistently across slides, docs, reports, HTML pages.
+- **[brand-guidelines](https://github.com/anthropics/skills)** — Anthropic's example skill for applying official brand colours and typography. Useful as a template for your own brand-guideline skill.
+
+### Visual & motion content
+
+- **[gsap](https://github.com/doodledood/claude-code-plugins/tree/main/claude-plugins/frontend-design/skills/gsap)** — GSAP animation reference: timelines, easing, ScrollTrigger, stagger. The library every animation tutorial assumes you already know.
+- **[canvas-design](https://github.com/anthropics/skills)** — Branded visual graphics (PNG/PDF) using a design philosophy rather than a template. Stat cards, social frames, infographics.
+- **[algorithmic-art](https://github.com/anthropics/skills)** — Generative art with p5.js + seeded randomness. Surprisingly useful for blog hero images and social cards that don't look stock.
+- **[image-generation](https://github.com/anthropics/skills)** — Optimised prompting patterns for Gemini and OpenAI image models. Stops you from generating expensive 2K images when 1K does the job.
+
+### Interactive things
+
+- **[web-artifacts-builder / interactive-tools-builder](https://github.com/anthropics/skills)** — Build calculators, demos, quizzes, mini-tools as React components on Tailwind. The "engineering as marketing" play, automated.
+- **[hyperframes](https://github.com/Royalti-io/hyperframes)** + **[hyperframes-cli](https://github.com/Royalti-io/hyperframes-cli)** — Video compositions, animations, voiceovers, audio-reactive visuals using Remotion. For when a screenshot doesn't sell it.
+
+### Research & content
+
+- **[exa-integration](https://github.com/anthropics/skills)** — Exa AI search and Websets for prospect research, semantic search, list-building. Faster than Googling.
+- **[brightdata-integration](https://github.com/anthropics/skills)** — Bright Data web scraping via a CLI wrapper. For when you need real public data, not synthesised data.
+- **[claude-api](https://github.com/anthropics/skills)** — Build apps with the Claude API/Anthropic SDK. Includes prompt-caching patterns, model migration helpers, and batch APIs.
+- **[streaming](https://github.com/anthropics/skills)** — Server-Sent Events for Claude API. The right way to do real-time chat UIs.
+
+### Documents & spreadsheets
+
+- **[pdf](https://github.com/anthropics/skills)** — Read, edit, merge, split, create PDFs. Form-fills, table extraction.
+- **[docx](https://github.com/anthropics/skills)** — Open, read, edit `.docx` files. For everything your lawyer or accountant sends.
+- **[xlsx](https://github.com/anthropics/skills)** — Spreadsheets — read, write, analyse. Pricing sheets, board financials, cap tables.
+- **[pptx](https://github.com/anthropics/skills)** — Build and edit PowerPoint decks. Pitch decks, investor updates.
+
+### Foundation skills (almost everyone should install these)
+
+- **[skill-creator](https://github.com/anthropics/skills)** — Bootstraps the file structure for a new skill. Use this the first time you find yourself doing the same task by hand twice.
+- **[mcp-builder](https://github.com/anthropics/skills)** — Builds new MCP servers so Claude can talk to your own tools and data.
+- **[claude-code-patterns](https://github.com/anthropics/skills)** — The canonical reference for agents, skills, and slash commands. Read once even if you don't think you'll build any.
+- **[doc-coauthoring](https://github.com/anthropics/skills)** — Structured workflow for writing real documentation with Claude. Different from "generate me some docs."
+- **[webapp-testing](https://github.com/anthropics/skills)** — Playwright-based interaction and verification of local web apps. The fastest way to test a UI without learning testing frameworks.
 
 ## Libraries you'll keep reaching for
 
